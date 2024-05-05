@@ -103,6 +103,24 @@ const createPost = async (title, content, userId) => {
   return response.data;
 };
 
+const createdComment = async (body) => {
+  const response = await axios.post(`${URL.service}/comments`, { headers, body });
+
+  return response.data;
+};
+
+const deleteCommentByCommentId = async (id) => {
+  const response = await axios.delete(`${URL.service}/comments/${id}`, { headers });
+
+  return response.data;
+};
+
+const editCommentByPostId = async (body) => {
+  const response = await axios.put(`${URL.service}/comments/${body.id}`, { headers, body });
+
+  return response.data;
+};
+
 export default {
   fetchUsers,
   fetchUserById,
@@ -117,5 +135,8 @@ export default {
   fetchPhoto,
   deletePostByPostId,
   createPost,
-  editPostByPostId
+  editPostByPostId,
+  createdComment,
+  deleteCommentByCommentId,
+  editCommentByPostId
 };
