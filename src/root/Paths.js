@@ -3,7 +3,9 @@ const Paths = {
   DetailUser: '/users/:id',
   Album: '/albums/:id',
   DetailPost: '/posts/:id',
-  Photo: '/photos/:id'
+  Photo: '/photos/:id',
+  CreatePost: '/posts/create',
+  UpdatePost: '/posts/update/:id',
 };
 
 export default Paths;
