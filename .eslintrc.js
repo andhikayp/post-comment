@@ -26,6 +26,8 @@ module.exports = {
     'react/jsx-props-no-spreading': 'off',
     'class-methods-use-this': 'off',
     'no-undef': 'off',
-    'no-unused-vars': 'off'
+    'no-unused-vars': 'off',
+    'no-unsafe-optional-chaining': 'off',
+    'eslint-disable eqeqeq': 'off'
   },
 };

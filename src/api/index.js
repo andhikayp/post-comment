@@ -79,6 +79,30 @@ const fetchPhoto = async (id) => {
   };
 };
 
+const deletePostByPostId = async (id) => {
+  const response = await axios.delete(`${URL.service}/posts/${id}`, { headers });
+
+  return response.data;
+};
+
+const editPostByPostId = async (id, title, content, userId) => {
+  const body = {
+    title, body: content, userId, id
+  };
+  const response = await axios.put(`${URL.service}/posts/${id}`, { headers, body });
+
+  return response.data;
+};
+
+const createPost = async (title, content, userId) => {
+  const body = {
+    title, body: content, userId
+  };
+  const response = await axios.post(`${URL.service}/posts`, { headers, body });
+
+  return response.data;
+};
+
 export default {
   fetchUsers,
   fetchUserById,
@@ -90,5 +114,8 @@ export default {
   fetchPostByPostId,
   fetchCommentsByPostId,
   fetchPhotoByPhotoId,
-  fetchPhoto
+  fetchPhoto,
+  deletePostByPostId,
+  createPost,
+  editPostByPostId
 };
