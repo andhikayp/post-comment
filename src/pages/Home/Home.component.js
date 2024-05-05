@@ -1,48 +1,68 @@
 import React from 'react';
-import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Accordion from 'react-bootstrap/Accordion';
+import { useQuery } from '@tanstack/react-query';
+import Button from 'react-bootstrap/Button';
 
-const Home = () => {
-  
+import Api from '../../api';
+import { Layout } from '../../component/Layout';
 
-  return(
-  <div>
-    <Container>
-      <Row>
-        <Col>
-        <Accordion defaultActiveKey="0">
-      <Accordion.Item eventKey="0">
-        <Accordion.Header>Accordion Item #1</Accordion.Header>
+const { fetchUsers } = Api;
+
+const Home = (props) => {
+  const { history } = props;
+  const { data: users, isLoading } = useQuery(
+    ['users'],
+    () => fetchUsers(),
+  );
+
+  const renderDetailUser = (user, key) => {
+    const {
+      username, name, phone, website, company, id
+    } = user;
+
+    const handleOnclick = () => {
+      history.push(`/users/${id}`);
+    };
+
+    return (
+      <Accordion.Item eventKey={key}>
+        <Accordion.Header>{`${username} | ${name}`}</Accordion.Header>
         <Accordion.Body>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat. Duis aute irure dolor in
-          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-          culpa qui officia deserunt mollit anim id est laborum.
+          <Row>
+            <Col>Phone</Col>
+            <Col>{`: ${phone}`}</Col>
+          </Row>
+          <Row>
+            <Col>Website</Col>
+            <Col>{`: ${website}`}</Col>
+          </Row>
+          <Row>
+            <Col>Company</Col>
+            <Col>{`: ${company.name}`}</Col>
+          </Row>
+          <Button variant="primary" className="mt-3" onClick={handleOnclick}>
+            Detail
+          </Button>
         </Accordion.Body>
       </Accordion.Item>
-      <Accordion.Item eventKey="1">
-        <Accordion.Header>Accordion Item #2</Accordion.Header>
-        <Accordion.Body>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat. Duis aute irure dolor in
-          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-          pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-          culpa qui officia deserunt mollit anim id est laborum.
-        </Accordion.Body>
-      </Accordion.Item>
+    );
+  };
+
+  const renderContent = () => (
+    <Accordion defaultActiveKey="0">
+      {users.map(renderDetailUser)}
     </Accordion>
+  );
 
-        </Col>
-      </Row>
-    </Container>
-  </div>
-)};
+  return (
+    <Layout
+      title="Users"
+      content={renderContent}
+      isLoading={isLoading}
+    />
+  );
+};
 
 export default Home;

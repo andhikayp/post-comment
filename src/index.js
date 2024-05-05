@@ -2,10 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { QueryClient, QueryClientProvider, } from '@tanstack/react-query';
-import ThemeProvider from 'react-bootstrap/ThemeProvider'
+import ThemeProvider from 'react-bootstrap/ThemeProvider';
 
-
-import './index.css';
 import reportWebVitals from './reportWebVitals';
 import { RootNavigation } from './root';
 
@@ -13,6 +11,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 const queryClient = new QueryClient();
 const root = ReactDOM.createRoot(document.getElementById('root'));
+localStorage.setItem('userId', 2);
 
 root.render(
   <Router>

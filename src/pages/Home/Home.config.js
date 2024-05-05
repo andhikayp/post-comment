@@ -1,3 +1,3 @@
-const screenName = 'NotFound';
+const screenName = 'Home';
 
 export default { screenName };
