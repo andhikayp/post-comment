@@ -1,23 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import { useQuery } from '@tanstack/react-query';
 
 import Api from '../../api';
 import { Layout } from '../../component/Layout';
 import { Snackbar } from '../../component/Snackbar';
 
-const { createPost, editPostByPostId, fetchPostByPostId } = Api;
+const { createPost, editPostByPostId } = Api;
 
 const FormPost = (props) => {
-  const { match, history } = props;
-  const { id } = match.params;
+  const {
+    id, title, content, isLoading
+  } = props;
   const userId = localStorage.getItem('userId');
-  const { data: post, isLoading } = useQuery(
-    ['post'],
-    () => fetchPostByPostId(id),
-  );
-
   const [formData, setFormData] = useState({
     title: '',
     content: ''
@@ -25,28 +20,15 @@ const FormPost = (props) => {
 
   useEffect(() => {
     setFormData({
-      ...formData,
-      title: post?.title,
-      content: post?.body,
+      title, content
     });
-  }, [isLoading]);
+  }, [title]);
 
   const [isShowSnackbar, setIsShowSnackbar] = useState(false);
+
   setTimeout(() => {
     setIsShowSnackbar(false);
   }, 4000);
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const { title, content } = formData;
-    if (id) {
-      await editPostByPostId(id, title, content, userId);
-      setIsShowSnackbar(true);
-      return;
-    }
-    await createPost(title, content, userId);
-    setIsShowSnackbar(true);
-  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -54,6 +36,18 @@ const FormPost = (props) => {
       ...formData,
       [name]: value
     });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const { title: newTitle, content: newContent } = formData;
+    if (id) {
+      await editPostByPostId(id, newTitle, newContent, userId);
+      setIsShowSnackbar(true);
+      return;
+    }
+    await createPost(newTitle, newContent, userId);
+    setIsShowSnackbar(true);
   };
 
   const renderSnackbar = () => {
@@ -83,7 +77,6 @@ const FormPost = (props) => {
           Submit
         </Button>
       </Form>
-
     </div>
   );
 
@@ -91,7 +84,7 @@ const FormPost = (props) => {
     <Layout
       title={id ? 'Update Post' : 'Create Post'}
       content={renderContent}
-      isLoading={false}
+      isLoading={isLoading}
     />
   );
 };
